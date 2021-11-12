@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+    environment {
+        PATH = "$PATH:/usr/local/bin"
+    }
+
+    stages {
+        stage('Git clone') {
+            steps {
+               git branch: 'main', credentialsId: '2a3f181c-3063-4be4-ba45-8b60bfb8e5bb', url: 'https://github.com/anubhavtriv/docker_compose.git'
+            }
+        }
+        stage('NPM'){
+            steps{
+                echo 'npm install' 
+            }
+        }
+        stage('Build'){
+            steps{
+             sh 'docker-compose up -d'
+            }
+        }
+        stage('Node test'){
+            steps{
+                echo 'node test'
+            }
+        }
+    }
+}
